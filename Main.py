@@ -1,7 +1,12 @@
+#José Romero A00827813
+#Diego Andrés Moreno A01283790
+#Juego Pacman
+
 from random import choice
 from turtle import *
 from freegames import floor, vector
 
+# Definicion de variables
 state = {'score': 0}
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
@@ -13,6 +18,7 @@ ghosts = [
     [vector(100, 160), vector(0, -5)],
     [vector(100, -160), vector(-5, 0)],
 ]
+# Diseño del tablero del juego
 tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
@@ -36,6 +42,7 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 
+# Funcion auxiliar para diseño de tablero
 def square(x, y):
     "Draw square using path at (x, y)."
     path.up()
@@ -49,6 +56,7 @@ def square(x, y):
 
     path.end_fill()
 
+# Esta función es para determinar la posición de alguna entidad dentro del mapa
 def offset(point):
     "Return offset of point in tiles."
     x = (floor(point.x, 20) + 200) / 20
@@ -56,6 +64,7 @@ def offset(point):
     index = int(x + y * 20)
     return index
 
+# Validar si el punto de movimiento es valido en el mapa
 def valid(point):
     "Return True if point is valid in tiles."
     index = offset(point)
@@ -70,6 +79,7 @@ def valid(point):
 
     return point.x % 20 == 0 or point.y % 20 == 0
 
+# Creación del mapa
 def world():
     "Draw world using path."
     bgcolor('black')
@@ -88,6 +98,7 @@ def world():
                 path.goto(x + 10, y + 10)
                 path.dot(2, 'white')
 
+# Movimientos del pacman y fantasmas
 def move():
     "Move pacman and all ghosts."
     writer.undo()
@@ -99,7 +110,7 @@ def move():
         pacman.move(aim)
 
     index = offset(pacman)
-
+    #Puntuacion del Pacman
     if tiles[index] == 1:
         tiles[index] = 2
         state['score'] += 1
@@ -115,6 +126,7 @@ def move():
         if valid(point + course):
             point.move(course)
         else:
+            #Velocidades de los fantasmas
             options = [
                 vector(10, 0),
                 vector(-10, 0),
@@ -154,12 +166,14 @@ def move():
 
     ontimer(move, 100)
 
+# Para que el usuario eliga la dirección de los movimientos del pacman
 def change(x, y):
     "Change pacman aim if valid."
     if valid(pacman + vector(x, y)):
         aim.x = x
         aim.y = y
 
+# Punto de spawn de las entidades
 setup(420, 420, 370, 0)
 hideturtle()
 tracer(False)
@@ -167,6 +181,7 @@ writer.goto(160, 160)
 writer.color('white')
 writer.write(state['score'])
 listen()
+#Velocidad del pacman
 onkey(lambda: change(5, 0), 'Right')
 onkey(lambda: change(-5, 0), 'Left')
 onkey(lambda: change(0, 5), 'Up')

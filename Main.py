@@ -121,7 +121,24 @@ def move():
                 vector(0, 10),
                 vector(0, -10),
             ]
-            plan = choice(options)
+            
+            #Le agrega inteligencia en el sentido de que elimina una opcion en cada iteracion, 
+            #de manera que basa su siguiente posicionamiento a comparacion de la posicion actual del pacman
+
+            diffX = pacman.x - point.x
+            diffY = pacman.y - point.y
+            if(diffX > 0):
+                plan = choice([vector(10, 0),vector(0, 10),
+                vector(0, -10)])
+            elif(diffX < 0):
+                plan = choice([vector(-10, 0),vector(0, 10),
+                vector(0, -10)])
+            if(diffY > 0):
+                plan = choice([vector(0, 10),vector(-10, 0),
+                vector(10, 0)])
+            elif(diffY < 0):
+                 plan = choice([vector(0, -10),vector(-10, 0),
+                vector(10, 0)])
             course.x = plan.x
             course.y = plan.y
 
